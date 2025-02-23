@@ -2,5 +2,6 @@
 
 public interface IAuditable
 {
-    public void SetLastModifiedDetails(string? modifiedBy, TimeProvider timeProvider);
+    void SetLastModifiedDetails(string? modifiedBy, TimeProvider timeProvider);
+    void SetLastModifiedDetails(string? modifiedBy, DateTimeOffset lastModifiedUtc);
 }

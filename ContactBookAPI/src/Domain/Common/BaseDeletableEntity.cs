@@ -7,9 +7,12 @@ public abstract class BaseDeletableEntity : BaseEntity, IDeletable
     public DateTimeOffset? Deleted { get; private set; }
 
     public void Delete(string? deletedBy, TimeProvider timeProvider)
+        => Delete(deletedBy, timeProvider?.GetUtcNow() ?? DateTime.UtcNow);
+
+    public void Delete(string? deletedBy, DateTimeOffset utcNow)
     {
-        this.IsDeleted = true;
-        this.DeletedBy = deletedBy;
-        this.Deleted = timeProvider?.GetUtcNow() ?? DateTime.UtcNow;
+        IsDeleted = true;
+        DeletedBy = deletedBy;
+        Deleted = utcNow;
     }
 }

@@ -7,14 +7,11 @@ public abstract class BaseAuditableEntity : BaseEntity, IAuditable
     public string? LastModifiedBy { get; private set; }
 
     public void SetLastModifiedDetails(string? modifiedBy, TimeProvider timeProvider)
-    {
-        this.LastModifiedBy = modifiedBy;
-        this.LastModified = timeProvider?.GetUtcNow() ?? DateTime.UtcNow;
-    }
+        => SetLastModifiedDetails(modifiedBy, timeProvider?.GetUtcNow() ?? DateTime.UtcNow);
 
     public void SetLastModifiedDetails(string? modifiedBy, DateTimeOffset lastModifiedUtc)
     {
-        this.LastModifiedBy = modifiedBy;
-        this.LastModified = lastModifiedUtc;
+        LastModifiedBy = modifiedBy;
+        LastModified = lastModifiedUtc;
     }
 }

@@ -17,22 +17,18 @@ public abstract class BaseEntity : IEntity
     
     public string? CreatedBy { get; private set; }
 
-
     private readonly List<BaseEvent> _domainEvents = new();
 
     [NotMapped]
     public IReadOnlyCollection<BaseEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     public void SetCreationDetails(string? createdBy, TimeProvider timeProvider)
-    {
-        this.CreatedBy = createdBy;
-        this.Created = timeProvider?.GetUtcNow() ?? DateTime.UtcNow;
-    }
+        => SetCreationDetails(createdBy, timeProvider?.GetUtcNow() ?? DateTime.UtcNow);
 
     public void SetCreationDetails(string? createdBy, DateTimeOffset createdUtc)
     {
-        this.CreatedBy = createdBy;
-        this.Created = createdUtc;
+        CreatedBy = createdBy;
+        Created = createdUtc;
     }
 
     public void AddDomainEvent(BaseEvent domainEvent)

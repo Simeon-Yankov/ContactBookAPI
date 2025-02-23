@@ -61,7 +61,7 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
 
         foreach (var entry in auditedEntities)
         {
-            entry.Entity.SetLastModifiedDetails(null, _dateTime);
+            entry.Entity.SetLastModifiedDetails(null, utcNow);
         }
     }
 
@@ -81,7 +81,7 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
         foreach (var entry in softDeletableEntitiesOnDelete)
         {
             entry.State = EntityState.Modified;
-            entry.Entity.Delete(null, _dateTime);
+            entry.Entity.Delete(null, utcNow);
         }
     }
 }

@@ -2,5 +2,6 @@
 
 public interface IDeletable
 {
-    public void Delete(string? deletedBy, TimeProvider timeProvider);
+    void Delete(string? deletedBy, TimeProvider timeProvider);
+    void Delete(string? deletedBy, DateTimeOffset utcNow);
 }
