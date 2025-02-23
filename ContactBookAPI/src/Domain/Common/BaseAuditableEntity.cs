@@ -1,12 +1,20 @@
 ﻿namespace ContactBookAPI.Domain.Common;
 
-public abstract class BaseAuditableEntity : BaseEntity
+public abstract class BaseAuditableEntity : BaseEntity, IAuditable
 {
-    public DateTimeOffset Created { get; set; }
+    public DateTimeOffset? LastModified { get; private set; }
 
-    public string? CreatedBy { get; set; }
+    public string? LastModifiedBy { get; private set; }
 
-    public DateTimeOffset LastModified { get; set; }
+    public void SetLastModifiedDetails(string? modifiedBy, TimeProvider timeProvider)
+    {
+        this.LastModifiedBy = modifiedBy;
+        this.LastModified = timeProvider?.GetUtcNow() ?? DateTime.UtcNow;
+    }
 
-    public string? LastModifiedBy { get; set; }
+    public void SetLastModifiedDetails(string? modifiedBy, DateTimeOffset lastModifiedUtc)
+    {
+        this.LastModifiedBy = modifiedBy;
+        this.LastModified = lastModifiedUtc;
+    }
 }

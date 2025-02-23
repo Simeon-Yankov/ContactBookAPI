@@ -2,16 +2,38 @@
 
 namespace ContactBookAPI.Domain.Common;
 
-public abstract class BaseEntity
+public abstract class BaseEntity : IEntity
 {
-    // This can easily be modified to be BaseEntity<T> and public T Id to support different key types.
-    // Using non-generic integer types for simplicity
-    public int Id { get; set; }
+    /// <summary>
+    /// EF Core requires a parameterless constructor to instantiate entities.
+    /// </summary>
+    protected BaseEntity()
+    {
+    }
+
+    public int Id { get; private set; }
+
+    public DateTimeOffset Created { get; private set; }
+    
+    public string? CreatedBy { get; private set; }
+
 
     private readonly List<BaseEvent> _domainEvents = new();
 
     [NotMapped]
     public IReadOnlyCollection<BaseEvent> DomainEvents => _domainEvents.AsReadOnly();
+
+    public void SetCreationDetails(string? createdBy, TimeProvider timeProvider)
+    {
+        this.CreatedBy = createdBy;
+        this.Created = timeProvider?.GetUtcNow() ?? DateTime.UtcNow;
+    }
+
+    public void SetCreationDetails(string? createdBy, DateTimeOffset createdUtc)
+    {
+        this.CreatedBy = createdBy;
+        this.Created = createdUtc;
+    }
 
     public void AddDomainEvent(BaseEvent domainEvent)
     {
