@@ -14,9 +14,6 @@ public class CustomExceptionHandler : IExceptionHandler
         _exceptionHandlers = new()
             {
                 { typeof(ValidationException), HandleValidationException },
-                { typeof(NotFoundException), HandleNotFoundException },
-                { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
-                { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
             };
     }
 

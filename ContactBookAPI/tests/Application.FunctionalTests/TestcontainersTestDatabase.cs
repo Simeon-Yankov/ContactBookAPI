@@ -1,22 +1,22 @@
 ﻿using System.Data.Common;
 using ContactBookAPI.Infrastructure.Data;
-using Microsoft.Data.SqlClient;
+using Npgsql;
 using Microsoft.EntityFrameworkCore;
 using Respawn;
-using Testcontainers.MsSql;
+using Testcontainers.PostgreSql;
 
 namespace ContactBookAPI.Application.FunctionalTests;
 
 public class TestcontainersTestDatabase : ITestDatabase
 {
-    private readonly MsSqlContainer _container;
+    private readonly PostgreSqlContainer _container;
     private DbConnection _connection = null!;
     private string _connectionString = null!;
     private Respawner _respawner = null!;
 
     public TestcontainersTestDatabase()
     {
-        _container = new MsSqlBuilder()
+        _container = new PostgreSqlBuilder()
             .WithAutoRemove(true)
             .Build();
     }
@@ -27,15 +27,15 @@ public class TestcontainersTestDatabase : ITestDatabase
 
         _connectionString = _container.GetConnectionString();
 
-        _connection = new SqlConnection(_connectionString);
+        _connection = new NpgsqlConnection(_connectionString);
 
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseSqlServer(_connectionString)
+            .UseNpgsql(_connectionString)
             .Options;
 
         var context = new ApplicationDbContext(options);
 
-        context.Database.Migrate();
+        await context.Database.MigrateAsync();
 
         _respawner = await Respawner.CreateAsync(_connectionString, new RespawnerOptions
         {

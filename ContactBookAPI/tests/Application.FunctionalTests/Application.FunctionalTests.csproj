@@ -3,6 +3,7 @@
     <PropertyGroup>
         <RootNamespace>ContactBookAPI.Application.FunctionalTests</RootNamespace>
         <AssemblyName>ContactBookAPI.Application.FunctionalTests</AssemblyName>
+        <UserSecretsId>21fa6b4f-9f37-4c4c-992f-fce31c0852dc</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -33,7 +34,7 @@
         <PackageReference Include="FluentAssertions" />
         <PackageReference Include="Moq" />
         <PackageReference Include="Respawn" />
-        <PackageReference Include="Testcontainers.MsSql" />
+        <PackageReference Include="Testcontainers.PostgreSql" />
     </ItemGroup>
     
     <ItemGroup>

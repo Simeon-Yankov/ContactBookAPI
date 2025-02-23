@@ -32,7 +32,7 @@ public class SqlServerTestDatabase : ITestDatabase
         _connection = new SqlConnection(_connectionString);
 
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseSqlServer(_connectionString)
+            .UseNpgsql(_connectionString)
             .Options;
 
         var context = new ApplicationDbContext(options);

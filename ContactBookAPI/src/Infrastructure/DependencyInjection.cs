@@ -1,9 +1,6 @@
 ﻿using ContactBookAPI.Application.Common.Interfaces;
-using ContactBookAPI.Domain.Constants;
 using ContactBookAPI.Infrastructure.Data;
 using ContactBookAPI.Infrastructure.Data.Interceptors;
-using ContactBookAPI.Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -24,24 +21,13 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
-
-            options.UseSqlServer(connectionString);
+            options.UseNpgsql(connectionString);
         });
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
-
         services.AddScoped<ApplicationDbContextInitialiser>();
 
-        services
-            .AddDefaultIdentity<ApplicationUser>()
-            .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
-
         services.AddSingleton(TimeProvider.System);
-        services.AddTransient<IIdentityService, IdentityService>();
-
-        services.AddAuthorization(options =>
-            options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator)));
 
         return services;
     }
