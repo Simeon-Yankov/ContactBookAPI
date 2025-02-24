@@ -25,6 +25,8 @@ public class DeletePersonCommandHandler : IRequestHandler<DeletePersonCommand, R
 
     public async Task<Result> Handle(DeletePersonCommand request, CancellationToken cancellationToken)
     {
+        await Task.Run(() => { });
+
         throw new NotImplementedException();
     }
 }

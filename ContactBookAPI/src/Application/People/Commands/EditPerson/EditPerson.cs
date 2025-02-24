@@ -25,6 +25,7 @@ public class EditPersonCommandHandler : IRequestHandler<EditPersonCommand, Resul
 
     public async Task<Result> Handle(EditPersonCommand request, CancellationToken cancellationToken)
     {
+        await Task.Run(() => { });
         throw new NotImplementedException();
     }
 }
