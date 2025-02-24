@@ -9,7 +9,7 @@ public class Address
 
     public Address(string addressLine, AddressType addressType)
     {
-        VlidateAddressLine(addressLine);
+        ValidateAddressLine(addressLine);
 
         AddressLine = addressLine;
         AddressType = addressType;
@@ -22,7 +22,7 @@ public class Address
 
     public void UpdateAddressLine(string addressLine)
     {
-        VlidateAddressLine(addressLine);
+        ValidateAddressLine(addressLine);
 
         AddressLine = addressLine;
     }
@@ -37,7 +37,7 @@ public class Address
         return _phoneNumbers.Remove(phoneNumber);
     }
 
-    private void VlidateAddressLine(string addressLine)
+    private void ValidateAddressLine(string addressLine)
     {
         if (string.IsNullOrWhiteSpace(addressLine))
             throw new ArgumentException("Address line cannot be empty.", nameof(addressLine));
