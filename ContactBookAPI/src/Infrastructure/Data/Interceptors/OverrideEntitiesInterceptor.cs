@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace ContactBookAPI.Infrastructure.Data.Interceptors;
 
-public class AuditableEntityInterceptor : SaveChangesInterceptor
+public class OverrideEntitiesInterceptor : SaveChangesInterceptor
 {
     private readonly TimeProvider _dateTime;
 
-    public AuditableEntityInterceptor(
+    public OverrideEntitiesInterceptor(
         TimeProvider dateTime)
     {
         _dateTime = dateTime;
@@ -37,7 +37,7 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
-    public void AddEntities(DbContext? context, DateTimeOffset utcNow)
+    private void AddEntities(DbContext? context, DateTimeOffset utcNow)
     {
         if (context == null) return;
 
@@ -51,7 +51,7 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
         }
     }
 
-    public void UpdateEntities(DbContext? context, DateTimeOffset utcNow)
+    private void UpdateEntities(DbContext? context, DateTimeOffset utcNow)
     {
         if (context == null) return;
 
@@ -70,7 +70,7 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
     /// </summary>
     /// <param name="context"></param>
     /// <param name="utcNow"></param>
-    public void DeleteEntities(DbContext? context, DateTimeOffset utcNow)
+    private void DeleteEntities(DbContext? context, DateTimeOffset utcNow)
     {
         if (context == null) return;
 

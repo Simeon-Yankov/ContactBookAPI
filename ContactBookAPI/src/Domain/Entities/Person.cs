@@ -1,4 +1,6 @@
-﻿namespace ContactBookAPI.Domain.Entities;
+﻿using ContactBookAPI.Domain.ValueObjects;
+
+namespace ContactBookAPI.Domain.Entities;
 
 public class Person : BaseDeletableAuditableEntity
 {
@@ -39,4 +41,29 @@ public class Person : BaseDeletableAuditableEntity
         if (string.IsNullOrWhiteSpace(fullName))
             throw new ArgumentException("Full name cannot be empty.", nameof(fullName));
     }
+
+    //#region Address
+    //public void UpdateAddressLine(string addressLine)
+    //{
+    //    ValidateAddressLine(addressLine);
+
+    //    AddressLine = addressLine;
+    //}
+
+    //public bool AddPhoneNumber(PhoneNumber phoneNumber)
+    //{
+    //    return _phoneNumbers.Add(phoneNumber);
+    //}
+
+    //public bool RemovePhoneNumber(PhoneNumber phoneNumber)
+    //{
+    //    return _phoneNumbers.Remove(phoneNumber);
+    //}
+
+    //private void ValidateAddressLine(string addressLine)
+    //{
+    //    if (string.IsNullOrWhiteSpace(addressLine))
+    //        throw new ArgumentException("Address line cannot be empty.", nameof(addressLine));
+    //}
+    //#endregion
 }
