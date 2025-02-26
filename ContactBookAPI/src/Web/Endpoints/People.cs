@@ -2,11 +2,10 @@
 using ContactBookAPI.Application.People.Queries.GetPerson;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Routing;
 
 namespace ContactBookAPI.Web.Endpoints;
 
-public static class PersonEndpoints
+public static class People
 {
     public static void MapPersonEndpoints(this IEndpointRouteBuilder app)
     {
