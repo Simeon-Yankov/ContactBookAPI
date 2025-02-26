@@ -19,7 +19,9 @@ else
 
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
+app.UseOpenApi();
 app.UseSwaggerUi(settings =>
 {
     settings.Path = "/api";
@@ -33,6 +35,11 @@ app.MapControllerRoute(
 app.UseExceptionHandler(options => { });
 
 app.MapEndpoints();
+
+app.MapGet("/test", () =>
+{
+    return Results.Ok(true);
+});
 
 app.Run();
 

@@ -36,6 +36,8 @@ public class Person : BaseDeletableAuditableEntity
         return _addresses.Remove(address);
     }
 
+
+
     private void ValidateFullName(string fullName)
     {
         if (string.IsNullOrWhiteSpace(fullName))

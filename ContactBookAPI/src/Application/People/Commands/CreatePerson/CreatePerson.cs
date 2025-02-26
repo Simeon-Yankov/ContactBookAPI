@@ -1,4 +1,5 @@
 ﻿using ContactBookAPI.Application.Common.Interfaces;
+using ContactBookAPI.Domain.Entities;
 
 namespace ContactBookAPI.Application.People.Commands.CreatePerson;
 
@@ -11,6 +12,9 @@ public class CreatePersonCommandValidator : AbstractValidator<CreatePersonComman
 {
     public CreatePersonCommandValidator()
     {
+        RuleFor(x => x.FullName)
+            .NotEmpty()
+            .MaximumLength(70);
     }
 }
 
@@ -25,8 +29,12 @@ public class CreatePersonCommandHandler : IRequestHandler<CreatePersonCommand, i
 
     public async Task<int> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
     {
-        await Task.Run(() => { });
+        var person = new Person(request.FullName);
 
-        throw new NotImplementedException();
+        _context.People.Add(person);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return person.Id;
     }
 }

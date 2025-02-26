@@ -20,13 +20,11 @@ public static class DependencyInjection
         services.Configure<ApiBehaviorOptions>(options =>
             options.SuppressModelStateInvalidFilter = true);
 
-        // Minimal API
-        services.AddEndpointsApiExplorer();
+        services.AddControllers();
 
         services.AddOpenApiDocument((configure, sp) =>
         {
             configure.Title = "ContactBookAPI API";
-
         });
 
         return services;

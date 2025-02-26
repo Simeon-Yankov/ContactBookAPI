@@ -1,19 +1,24 @@
 ﻿using ContactBookAPI.Application.Common.Interfaces;
+using ContactBookAPI.Application.Common.Models;
 
 namespace ContactBookAPI.Application.People.Queries.GetPerson;
 
-public record GetPersonQuery : IRequest<PersonDto>
+public record GetPersonQuery : IRequest<PersonDto?>
 {
+    public int Id { get; init; } = default!;
 }
 
 public class GetPersonQueryValidator : AbstractValidator<GetPersonQuery>
 {
     public GetPersonQueryValidator()
     {
+        RuleFor(x => x.Id)
+             .GreaterThan(0).WithMessage("Id must be greater than 0.")
+             .LessThan(int.MaxValue).WithMessage($"Id must be less than {int.MaxValue}.");
     }
 }
 
-public class GetPersonQueryHandler : IRequestHandler<GetPersonQuery, PersonDto>
+public class GetPersonQueryHandler : IRequestHandler<GetPersonQuery, PersonDto?>
 {
     private readonly IApplicationDbContext _context;
 
@@ -22,10 +27,25 @@ public class GetPersonQueryHandler : IRequestHandler<GetPersonQuery, PersonDto>
         _context = context;
     }
 
-    public async Task<PersonDto> Handle(GetPersonQuery request, CancellationToken cancellationToken)
+    public async Task<PersonDto?> Handle(GetPersonQuery request, CancellationToken cancellationToken)
     {
-        await Task.Run(() => { });
+        var person = await _context.People
+            .AsNoTracking()
+            .Where(x => x.Id == request.Id)
+            .FirstOrDefaultAsync(cancellationToken);
 
-        throw new NotImplementedException();
+        return person is null 
+            ? null 
+            : new PersonDto
+              {
+                  Id = request.Id,
+                  FullName = person.FullName,
+                  Addresses = person.Addresses.Select(x => new AddressDto
+                  {
+                      AddressLine = x.AddressLine,
+                      AddressType = x.AddressType,
+                      PhoneNumbers = x.PhoneNumbers.Select(x => x.Number).ToList(),
+                  }),
+              };
     }
 }

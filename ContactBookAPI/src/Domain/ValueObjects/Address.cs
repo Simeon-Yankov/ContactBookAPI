@@ -15,6 +15,18 @@ public class Address : ValueObject
         _phoneNumbers = new HashSet<PhoneNumber>();
     }
 
+    public Address(
+        string addressLine,
+        AddressType addressType,
+        IEnumerable<PhoneNumber> phoneNumbers)
+        : this(addressLine, addressType)
+    {
+        foreach (PhoneNumber phoneNumber in phoneNumbers)
+        {
+            _phoneNumbers.Add(phoneNumber);
+        }
+    }
+
     public string AddressLine { get; private set; }
     public AddressType AddressType { get; private set; }
     public IReadOnlyCollection<PhoneNumber> PhoneNumbers => _phoneNumbers.ToList().AsReadOnly();
