@@ -16,15 +16,20 @@ public static class DependencyInjection
 
         services.AddExceptionHandler<CustomExceptionHandler>();
 
-        // Customise default API behaviour
         services.Configure<ApiBehaviorOptions>(options =>
             options.SuppressModelStateInvalidFilter = true);
 
         services.AddControllers();
 
-        services.AddOpenApiDocument((configure, sp) =>
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(c =>
         {
-            configure.Title = "ContactBookAPI API";
+            c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+            {
+                Title = "Contact Book API",
+                Version = "v1",
+                Description = "An API for managing contacts"
+            });
         });
 
         return services;

@@ -1,4 +1,5 @@
 using ContactBookAPI.Infrastructure.Data;
+using ContactBookAPI.Web.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     await app.InitialiseDatabaseAsync();
+
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Contact Book API V1");
+        c.RoutePrefix = "api";
+    });
 }
 else
 {
@@ -19,14 +27,6 @@ else
 
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseOpenApi();
-app.UseSwaggerUi(settings =>
-{
-    settings.Path = "/api";
-    settings.DocumentPath = "/api/specification.json";
-});
 
 app.MapControllerRoute(
     name: "default",
@@ -34,12 +34,7 @@ app.MapControllerRoute(
 
 app.UseExceptionHandler(options => { });
 
-app.MapEndpoints();
-
-app.MapGet("/test", () =>
-{
-    return Results.Ok(true);
-});
+app.MapPersonEndpoints();
 
 app.Run();
 
