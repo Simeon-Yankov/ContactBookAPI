@@ -9,10 +9,10 @@ namespace ContactBookAPI.Web.Endpoints;
 
 public static class People
 {
-    public static void MapPersonEndpoints(this IEndpointRouteBuilder app)
+    public static void MapPeopleEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/person")
-            .WithTags("Person")
+        var group = app.MapGroup("/api/people")
+            .WithTags("People")
             .WithOpenApi();
 
         group.MapGet("/", GetPerson);

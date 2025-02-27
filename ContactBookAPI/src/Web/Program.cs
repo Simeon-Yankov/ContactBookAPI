@@ -1,11 +1,14 @@
 using ContactBookAPI.Infrastructure.Data;
 using ContactBookAPI.Web.Endpoints;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebServices();
+
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 
@@ -34,7 +37,9 @@ app.MapControllerRoute(
 
 app.UseExceptionHandler(options => { });
 
-app.MapPersonEndpoints();
+app.MapPeopleEndpoints();
+
+app.UseMiddleware<PersonRequestLoggingMiddleware>();
 
 app.Run();
 
