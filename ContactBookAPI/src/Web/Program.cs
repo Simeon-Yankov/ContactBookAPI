@@ -8,7 +8,8 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebServices();
 
-builder.Host.UseSerilog();
+builder.Host.UseSerilog((context, configuration) =>
+   configuration.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
 

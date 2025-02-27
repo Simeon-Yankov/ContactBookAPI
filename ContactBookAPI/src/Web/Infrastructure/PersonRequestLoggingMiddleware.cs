@@ -1,16 +1,14 @@
-﻿namespace ContactBookAPI.Web.Infrastructure;
+﻿using Serilog;
+
+namespace ContactBookAPI.Web.Infrastructure;
 
 public class PersonRequestLoggingMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly ILogger<PersonRequestLoggingMiddleware> _logger;
 
-    public PersonRequestLoggingMiddleware(
-        RequestDelegate next,
-        ILogger<PersonRequestLoggingMiddleware> logger)
+    public PersonRequestLoggingMiddleware(RequestDelegate next)
     {
         _next = next;
-        _logger = logger;
     }
 
     public async Task Invoke(HttpContext context)
@@ -22,7 +20,7 @@ public class PersonRequestLoggingMiddleware
             var hasId = request.Query.TryGetValue("Id", out var personId);
             if (hasId)
             {
-                _logger.LogInformation(
+                Log.Information(
                     "Request received: {Method} {Path}, Person ID: {PersonId}",
                     request.Method,
                     request.Path,
