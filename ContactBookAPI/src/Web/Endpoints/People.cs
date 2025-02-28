@@ -1,9 +1,11 @@
 ﻿using ContactBookAPI.Application.People.Commands.CreatePerson;
 using ContactBookAPI.Application.People.Commands.DeletePerson;
 using ContactBookAPI.Application.People.Commands.EditPerson;
+using ContactBookAPI.Application.People.Commands.UpdateAddress;
 using ContactBookAPI.Application.People.Queries.GetPerson;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ContactBookAPI.Web.Endpoints;
 
@@ -15,9 +17,11 @@ public static class People
             .WithTags("People")
             .WithOpenApi();
 
-        group.MapGet("/", GetPerson);
+        group.MapGet("/{id:int}", GetPerson);
         group.MapPost("/", CreatePerson);
         group.MapPut("/", EditPerson);
+        group.MapPut("/update-home-address", UpdateHomeAddress);
+        group.MapPut("/update-business-address", UpdateBusinessAddress);
         group.MapDelete("/{id:int}", DeletePerson);
     }
 
@@ -46,6 +50,57 @@ public static class People
         {
             return TypedResults.BadRequest("Path ID does not match the request body ID.");
         }
+
+        var result = await sender.Send(command);
+
+        if (result.Succeeded)
+        {
+            return TypedResults.NoContent();
+        }
+
+        return TypedResults.BadRequest(result.Message);
+    }
+
+    public record UpdateAddressRequest()
+    {
+        public int PersonId { get; init; }
+        public string AddressLine { get; init; } = default!;
+        public IList<string> PhoneNumbers { get; init; } = [];
+    }
+
+    public static async Task<Results<NoContent, NotFound, BadRequest<string>>> UpdateHomeAddress(
+        ISender sender,
+        UpdateAddressRequest request)
+    {
+        var command = new UpdateAddressCommand
+        {
+            PersonId = request.PersonId,
+            AddressLine = request.AddressLine,
+            PhoneNumbers = request.PhoneNumbers,
+            AddressType = Domain.Enums.AddressType.Home
+        };
+
+        var result = await sender.Send(command);
+
+        if (result.Succeeded)
+        {
+            return TypedResults.NoContent();
+        }
+
+        return TypedResults.BadRequest(result.Message);
+    }
+
+    public static async Task<Results<NoContent, NotFound, BadRequest<string>>> UpdateBusinessAddress(
+            ISender sender,
+            UpdateAddressRequest request)
+    {
+        var command = new UpdateAddressCommand
+        {
+            PersonId = request.PersonId,
+            AddressLine = request.AddressLine,
+            PhoneNumbers = request.PhoneNumbers,
+            AddressType = Domain.Enums.AddressType.Business
+        };
 
         var result = await sender.Send(command);
 

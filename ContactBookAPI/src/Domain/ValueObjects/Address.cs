@@ -37,6 +37,22 @@ public class Address : ValueObject
             throw new ArgumentException("Address line cannot be empty.", nameof(addressLine));
     }
 
+    //public override int GetHashCode()
+    //{
+    //    var hash = new HashCode();
+
+    //    hash.Add(AddressLine);
+    //    hash.Add(AddressType);
+
+    //    foreach (var phoneNumber in _phoneNumbers.OrderBy(p => p.Number))
+    //    {
+    //        hash.Add(phoneNumber.Number);
+    //    }
+
+    //    return hash.ToHashCode();
+    //}
+
+
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return AddressLine;

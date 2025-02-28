@@ -5,7 +5,7 @@ namespace ContactBookAPI.Application.People.Queries.GetPerson;
 
 public record GetPersonQuery : IRequest<PersonDto?>
 {
-    public int Id { get; init; } = default!;
+    public int Id { get; init; }
 }
 
 public class GetPersonQueryValidator : AbstractValidator<GetPersonQuery>
@@ -13,8 +13,7 @@ public class GetPersonQueryValidator : AbstractValidator<GetPersonQuery>
     public GetPersonQueryValidator()
     {
         RuleFor(x => x.Id)
-             .GreaterThan(0).WithMessage("Id must be greater than 0.")
-             .LessThanOrEqualTo(int.MaxValue).WithMessage($"Id must be less or equal to {int.MaxValue}.");
+             .GreaterThan(0).WithMessage("Id must be greater than 0.");
     }
 }
 

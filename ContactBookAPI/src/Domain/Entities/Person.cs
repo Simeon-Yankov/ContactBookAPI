@@ -1,4 +1,5 @@
-﻿using ContactBookAPI.Domain.ValueObjects;
+﻿using ContactBookAPI.Domain.Enums;
+using ContactBookAPI.Domain.ValueObjects;
 
 namespace ContactBookAPI.Domain.Entities;
 
@@ -6,13 +7,28 @@ public class Person : BaseDeletableAuditableEntity
 {
     private readonly HashSet<Address> _addresses;
 
-    public Person(string fullName)
+    /// <summary>
+    /// EF Core parameterless ctr
+    /// </summary>
+    private Person()
     {
-        ValidateFullName(fullName);
+        FullName = "";
+        _addresses = [];
+    }
+
+    public Person(
+        string fullName,
+        Address homeAddress,
+        Address businessAddress)
+    {
+        Validate(fullName, homeAddress, businessAddress);
 
         FullName = fullName;
 
         _addresses = new HashSet<Address>();
+
+        _addresses.Add(homeAddress);
+        _addresses.Add(businessAddress);
     }
 
     public string FullName { get; private set; }
@@ -26,17 +42,37 @@ public class Person : BaseDeletableAuditableEntity
         FullName = fullName;
     }
 
-    public bool AddAddress(Address address)
+    public void UpdateAddress(AddressType type, Address newAddress)
     {
-        return _addresses.Add(address);
+        ArgumentNullException.ThrowIfNull(newAddress);
+
+        var address = _addresses.FirstOrDefault(a => a.AddressType == type);
+
+        if (address is null)
+        {
+            throw new Exception($"Address type not found. Type: {type}");
+        }
+
+        // TODO: FIx
+        //if (address.Equals(newAddress))
+        //{
+        //    throw new Exception("The address is Same.");
+        //}
+
+        _addresses.Remove(address);
+        _addresses.Add(newAddress);
     }
 
-    public bool RemoveAddress(Address address)
+    #region Validations
+    private void Validate(
+        string fullName,
+        Address homeAddress,
+        Address businessAddress)
     {
-        return _addresses.Remove(address);
+        ValidateFullName(fullName);
+        ValidateHomeAddress(homeAddress);
+        ValidateBusinessAddress(businessAddress);
     }
-
-
 
     private void ValidateFullName(string fullName)
     {
@@ -44,28 +80,20 @@ public class Person : BaseDeletableAuditableEntity
             throw new ArgumentException("Full name cannot be empty.", nameof(fullName));
     }
 
-    //#region Address
-    //public void UpdateAddressLine(string addressLine)
-    //{
-    //    ValidateAddressLine(addressLine);
+    private void ValidateHomeAddress(Address homeAddress)
+    {
+        ArgumentNullException.ThrowIfNull(homeAddress);
 
-    //    AddressLine = addressLine;
-    //}
+        if (homeAddress.AddressType is not AddressType.Home)
+            throw new ArgumentException("Invalid AddressType.");
+    }
 
-    //public bool AddPhoneNumber(PhoneNumber phoneNumber)
-    //{
-    //    return _phoneNumbers.Add(phoneNumber);
-    //}
+    private void ValidateBusinessAddress(Address businessAddress)
+    {
+        ArgumentNullException.ThrowIfNull(businessAddress);
 
-    //public bool RemovePhoneNumber(PhoneNumber phoneNumber)
-    //{
-    //    return _phoneNumbers.Remove(phoneNumber);
-    //}
-
-    //private void ValidateAddressLine(string addressLine)
-    //{
-    //    if (string.IsNullOrWhiteSpace(addressLine))
-    //        throw new ArgumentException("Address line cannot be empty.", nameof(addressLine));
-    //}
-    //#endregion
+        if (businessAddress.AddressType is not AddressType.Business)
+            throw new ArgumentException("Invalid AddressType.");
+    }
+    #endregion
 }
