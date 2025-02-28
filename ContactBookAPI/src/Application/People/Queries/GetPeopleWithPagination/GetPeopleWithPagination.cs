@@ -40,11 +40,11 @@ public class GetPeopleWithPaginationQueryHandler : IRequestHandler<GetPeopleWith
 
     public async Task<PaginatedList<PersonDto>> Handle(GetPeopleWithPaginationQuery request, CancellationToken cancellationToken)
     {
-        var peopleQueriable = _context.People;
+        var peopleQueriable = _context.People.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(request.FullName))
         {
-            peopleQueriable.Where(x => x.FullName.Contains(request.FullName.ToLower()));
+            peopleQueriable = peopleQueriable.Where(x => x.FullName.ToLower().Contains(request.FullName.ToLower()));
         }
 
         var people = await peopleQueriable
