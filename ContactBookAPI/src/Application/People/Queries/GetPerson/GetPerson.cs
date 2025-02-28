@@ -29,22 +29,20 @@ public class GetPersonQueryHandler : IRequestHandler<GetPersonQuery, PersonDto?>
     public async Task<PersonDto?> Handle(GetPersonQuery request, CancellationToken cancellationToken)
     {
         var person = await _context.People
-            .AsNoTracking()
+            .Select(x => new PersonDto
+            {
+                Id = x.Id,
+                FullName = x.FullName,
+                Addresses = x.Addresses.Select(y => new AddressDto
+                {
+                    AddressLine = y.AddressLine,
+                    AddressType = y.AddressType,
+                    PhoneNumbers = y.PhoneNumbers.Select(x => x.Number).ToList(),
+                }),
+            })
             .Where(x => x.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken);
 
-        return person is null 
-            ? null 
-            : new PersonDto
-              {
-                  Id = request.Id,
-                  FullName = person.FullName,
-                  Addresses = person.Addresses.Select(x => new AddressDto
-                  {
-                      AddressLine = x.AddressLine,
-                      AddressType = x.AddressType,
-                      PhoneNumbers = x.PhoneNumbers.Select(x => x.Number).ToList(),
-                  }),
-              };
+        return person;
     }
 }

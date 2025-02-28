@@ -1,7 +1,9 @@
-﻿using ContactBookAPI.Application.People.Commands.CreatePerson;
+﻿using ContactBookAPI.Application.Common.Models;
+using ContactBookAPI.Application.People.Commands.CreatePerson;
 using ContactBookAPI.Application.People.Commands.DeletePerson;
 using ContactBookAPI.Application.People.Commands.EditPerson;
 using ContactBookAPI.Application.People.Commands.UpdateAddress;
+using ContactBookAPI.Application.People.Queries.GetPeopleWithPagination;
 using ContactBookAPI.Application.People.Queries.GetPerson;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -17,12 +19,21 @@ public static class People
             .WithTags("People")
             .WithOpenApi();
 
+        group.MapGet("/", GetPeopleWithPagination);
         group.MapGet("/{id:int}", GetPerson);
         group.MapPost("/", CreatePerson);
         group.MapPut("/", EditPerson);
         group.MapPut("/update-home-address", UpdateHomeAddress);
         group.MapPut("/update-business-address", UpdateBusinessAddress);
         group.MapDelete("/{id:int}", DeletePerson);
+    }
+
+    public static async Task<Ok<PaginatedList<PersonDto>>> GetPeopleWithPagination(
+    ISender sender,
+    [AsParameters] GetPeopleWithPaginationQuery query)
+    {
+        var result = await sender.Send(query);
+        return TypedResults.Ok(result);
     }
 
     public static async Task<Results<Ok<PersonDto>, NotFound>> GetPerson(
