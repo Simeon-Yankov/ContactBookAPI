@@ -1,6 +1,7 @@
 ﻿using ContactBookAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ContactBookAPI.Domain.Constants;
 
 namespace ContactBookAPI.Infrastructure.Data.Configurations;
 
@@ -45,7 +46,7 @@ public class PersonConfiguration : IEntityTypeConfiguration<Person>
                 {
                     addressBuilder.Property(a => a.AddressLine)
                         .IsRequired()
-                        .HasMaxLength(256);
+                        .HasMaxLength(DomainConstants.Address.MaxAddressLength);
 
                     addressBuilder.Property(a => a.AddressType)
                         .IsRequired();
@@ -57,7 +58,7 @@ public class PersonConfiguration : IEntityTypeConfiguration<Person>
                             {
                                 phoneBuilder.Property(pn => pn.Number)
                                     .IsRequired()
-                                    .HasMaxLength(15);
+                                    .HasMaxLength(DomainConstants.PhoneNumber.MaxPhoneNumberLength);
                             });
                 });
     }
