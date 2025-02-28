@@ -4,7 +4,7 @@ namespace ContactBookAPI.Domain.ValueObjects;
 
 public class Address : ValueObject
 {
-    private readonly HashSet<PhoneNumber> _phoneNumbers;
+    private readonly List<PhoneNumber> _phoneNumbers;
 
     public Address(string addressLine, AddressType addressType)
     {
@@ -12,7 +12,7 @@ public class Address : ValueObject
 
         AddressLine = addressLine;
         AddressType = addressType;
-        _phoneNumbers = new HashSet<PhoneNumber>();
+        _phoneNumbers = new List<PhoneNumber>();
     }
 
     public Address(

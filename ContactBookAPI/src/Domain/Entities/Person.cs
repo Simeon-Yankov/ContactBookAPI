@@ -5,7 +5,7 @@ namespace ContactBookAPI.Domain.Entities;
 
 public class Person : BaseDeletableAuditableEntity
 {
-    private readonly HashSet<Address> _addresses;
+    private readonly List<Address> _addresses;
 
     /// <summary>
     /// EF Core parameterless ctr
@@ -25,7 +25,7 @@ public class Person : BaseDeletableAuditableEntity
 
         FullName = fullName;
 
-        _addresses = new HashSet<Address>();
+        _addresses = new List<Address>();
 
         _addresses.Add(homeAddress);
         _addresses.Add(businessAddress);
@@ -53,11 +53,10 @@ public class Person : BaseDeletableAuditableEntity
             throw new Exception($"Address type not found. Type: {type}");
         }
 
-        // TODO: FIx
-        //if (address.Equals(newAddress))
-        //{
-        //    throw new Exception("The address is Same.");
-        //}
+        if (address.Equals(newAddress))
+        {
+            throw new Exception("The address is Same.");
+        }
 
         _addresses.Remove(address);
         _addresses.Add(newAddress);
