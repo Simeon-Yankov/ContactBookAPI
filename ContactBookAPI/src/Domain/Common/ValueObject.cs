@@ -41,4 +41,8 @@ public abstract class ValueObject
 
         return hash.ToHashCode();
     }
+
+    public static bool operator ==(ValueObject first, ValueObject second) => first.Equals(second);
+
+    public static bool operator !=(ValueObject first, ValueObject second) => !(first == second);
 }
