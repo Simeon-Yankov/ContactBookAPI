@@ -1,4 +1,5 @@
-﻿using ContactBookAPI.Domain.Enums;
+﻿using ContactBookAPI.Domain.Exceptions;
+using static ContactBookAPI.Domain.Constants.DomainConstants.Address;
 
 namespace ContactBookAPI.Domain.ValueObjects;
 
@@ -33,25 +34,9 @@ public class Address : ValueObject
 
     private void Validate(string addressLine)
     {
-        if (string.IsNullOrWhiteSpace(addressLine))
-            throw new ArgumentException("Address line cannot be empty.", nameof(addressLine));
+        if (addressLine != null && MaxAddressLength <= addressLine.Length && addressLine.Length <= MaxAddressLength)
+            throw new IvnalidAddressException($"{nameof(Address)} must have between {MaxAddressLength} and {MaxAddressLength} symbols.");
     }
-
-    //public override int GetHashCode()
-    //{
-    //    var hash = new HashCode();
-
-    //    hash.Add(AddressLine);
-    //    hash.Add(AddressType);
-
-    //    foreach (var phoneNumber in _phoneNumbers.OrderBy(p => p.Number))
-    //    {
-    //        hash.Add(phoneNumber.Number);
-    //    }
-
-    //    return hash.ToHashCode();
-    //}
-
 
     protected override IEnumerable<object> GetEqualityComponents()
     {

@@ -10,9 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Constants\" />
     <Folder Include="Events\" />
-    <Folder Include="Exceptions\" />
   </ItemGroup>
 
 </Project>

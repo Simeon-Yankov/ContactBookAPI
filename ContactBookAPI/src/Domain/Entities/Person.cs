@@ -1,5 +1,4 @@
-﻿using ContactBookAPI.Domain.Enums;
-using ContactBookAPI.Domain.ValueObjects;
+﻿using ContactBookAPI.Domain.Exceptions;
 
 namespace ContactBookAPI.Domain.Entities;
 
@@ -49,14 +48,10 @@ public class Person : BaseDeletableAuditableEntity
         var address = _addresses.FirstOrDefault(a => a.AddressType == type);
 
         if (address is null)
-        {
-            throw new Exception($"Address type not found. Type: {type}");
-        }
+            throw new InvalidPersonException($"Address type not found. Type: {type}");
 
         if (address.Equals(newAddress))
-        {
-            throw new Exception("The address is Same.");
-        }
+            throw new InvalidPersonException("Address already set.");
 
         _addresses.Remove(address);
         _addresses.Add(newAddress);
@@ -76,23 +71,25 @@ public class Person : BaseDeletableAuditableEntity
     private void ValidateFullName(string fullName)
     {
         if (string.IsNullOrWhiteSpace(fullName))
-            throw new ArgumentException("Full name cannot be empty.", nameof(fullName));
+            throw new InvalidPersonException($"{nameof(FullName)} cannot be empty.");
     }
 
     private void ValidateHomeAddress(Address homeAddress)
     {
-        ArgumentNullException.ThrowIfNull(homeAddress);
+        if (homeAddress is null)
+            throw new InvalidPersonException($"{nameof(Address)} cannot be null.");
 
         if (homeAddress.AddressType is not AddressType.Home)
-            throw new ArgumentException("Invalid AddressType.");
+            throw new InvalidPersonException($"Invalid {nameof(AddressType)}.");
     }
 
     private void ValidateBusinessAddress(Address businessAddress)
     {
-        ArgumentNullException.ThrowIfNull(businessAddress);
+        if (businessAddress is null)
+            throw new InvalidPersonException($"{nameof(Address)} cannot be null.");
 
         if (businessAddress.AddressType is not AddressType.Business)
-            throw new ArgumentException("Invalid AddressType.");
+            throw new InvalidPersonException($"Invalid {nameof(AddressType)}.");
     }
     #endregion
 }
