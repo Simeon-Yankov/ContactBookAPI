@@ -1,9 +1,9 @@
 ﻿using ContactBookAPI.Application.Common.Interfaces;
 using ContactBookAPI.Application.Common.Mappings;
 using ContactBookAPI.Application.Common.Models;
-using ContactBookAPI.Application.People.Queries.GetPerson;
+using ContactBookAPI.Application.People.Queries.v1.GetPerson;
 
-namespace ContactBookAPI.Application.People.Queries.GetPeopleWithPagination;
+namespace ContactBookAPI.Application.People.Queries.v1.GetPeopleWithPagination;
 
 public record GetPeopleWithPaginationQuery : IRequest<PaginatedList<PersonDto>>
 {

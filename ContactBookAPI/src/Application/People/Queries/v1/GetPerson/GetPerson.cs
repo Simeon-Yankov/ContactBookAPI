@@ -1,7 +1,7 @@
 ﻿using ContactBookAPI.Application.Common.Interfaces;
 using ContactBookAPI.Application.Common.Models;
 
-namespace ContactBookAPI.Application.People.Queries.GetPerson;
+namespace ContactBookAPI.Application.People.Queries.v1.GetPerson;
 
 public record GetPersonQuery : IRequest<PersonDto?>
 {

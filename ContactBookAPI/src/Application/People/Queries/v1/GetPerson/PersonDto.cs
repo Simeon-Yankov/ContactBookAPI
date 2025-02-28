@@ -1,6 +1,6 @@
 ﻿using ContactBookAPI.Domain.Enums;
 
-namespace ContactBookAPI.Application.People.Queries.GetPerson;
+namespace ContactBookAPI.Application.People.Queries.v1.GetPerson;
 
 public class PersonDto
 {
