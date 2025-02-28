@@ -43,15 +43,19 @@ public class Person : BaseDeletableAuditableEntity
 
     public void UpdateAddress(AddressType type, Address newAddress)
     {
-        ArgumentNullException.ThrowIfNull(newAddress);
+        if (newAddress is null)
+            throw new InvalidPersonException($"{nameof(Address)} type not found. Type: {type}");
 
         var address = _addresses.FirstOrDefault(a => a.AddressType == type);
 
         if (address is null)
-            throw new InvalidPersonException($"Address type not found. Type: {type}");
+            throw new InvalidPersonException($"{nameof(Address)} type not found. Type: {type}");
 
         if (address.Equals(newAddress))
-            throw new InvalidPersonException("Address already set.");
+            throw new InvalidPersonException($"{nameof(Address)} already set.");
+
+        if (!newAddress.AddressType.Equals(type))
+            throw new InvalidPersonException($"{nameof(AddressType)} must match.");
 
         _addresses.Remove(address);
         _addresses.Add(newAddress);

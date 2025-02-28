@@ -22,7 +22,7 @@ public class PhoneNumber : ValueObject
 
     private void Validate(string number)
     {
-        if (MaxPhoneNumberLength <= number.Length && number.Length >= MaxPhoneNumberLength)
+        if (!(MinPhoneNumberLength <= number.Length && number.Length <= MaxPhoneNumberLength))
             throw new InvalidPhoneNumberException($"{nameof(PhoneNumber)} must have between {MaxPhoneNumberLength} and {MaxPhoneNumberLength} symbols.");
 
         if (!Regex.IsMatch(number, PhoneNumberRegularExpression))

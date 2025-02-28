@@ -7,7 +7,7 @@ public class Address : ValueObject
 {
     private readonly List<PhoneNumber> _phoneNumbers;
 
-    public Address(string addressLine, AddressType addressType)
+    private Address(string addressLine, AddressType addressType)
     {
         Validate(addressLine);
 
@@ -34,7 +34,7 @@ public class Address : ValueObject
 
     private void Validate(string addressLine)
     {
-        if (addressLine != null && MaxAddressLength <= addressLine.Length && addressLine.Length <= MaxAddressLength)
+        if (!(addressLine != null && MinAddressLength <= addressLine.Length && addressLine.Length <= MaxAddressLength))
             throw new IvnalidAddressException($"{nameof(Address)} must have between {MaxAddressLength} and {MaxAddressLength} symbols.");
     }
 
