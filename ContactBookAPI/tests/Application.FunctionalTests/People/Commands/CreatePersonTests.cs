@@ -1,7 +1,8 @@
 ﻿namespace ContactBookAPI.Application.FunctionalTests.People.Commands;
 
-using System.ComponentModel.DataAnnotations;
+using ContactBookAPI.Application.Common.Exceptions;
 using ContactBookAPI.Application.People.Commands.CreatePerson;
+using ContactBookAPI.Domain.Constants;
 using ContactBookAPI.Domain.Entities;
 using ContactBookAPI.Domain.Enums;
 
@@ -171,14 +172,16 @@ public class CreatePersonTests : BaseTestFixture
     [Test]
     public async Task ShouldRequireValidPhoneNumberLength()
     {
+        var invalidMaxLengthPhoneNumber = new string('1', DomainConstants.PhoneNumber.MaxPhoneNumberLength);
+
         // Arrange
         var command = new CreatePersonCommand
         {
             FullName = "John Doe",
             HomeAddressLine = "123 Home St",
             BusinessAddressLine = "456 Business Ave",
-            HomePhoneNumbers = new List<string> { "+1234567890123456" }, // 16 characters
-            BusinessPhoneNumbers = new List<string> { "+1234567890123456" }
+            HomePhoneNumbers = new List<string> { "+" + invalidMaxLengthPhoneNumber }, // 16 characters
+            BusinessPhoneNumbers = new List<string> { "+" + invalidMaxLengthPhoneNumber }
         };
 
         // Act & Assert

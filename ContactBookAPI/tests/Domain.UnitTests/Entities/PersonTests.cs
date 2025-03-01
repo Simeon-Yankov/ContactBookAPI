@@ -167,7 +167,7 @@ public class PersonTests
         var act = () => person.UpdateAddress(AddressType.Home, null!);
 
         // Assert
-        act.Should().ThrowExactly<ArgumentNullException>();
+        act.Should().ThrowExactly<InvalidPersonException>();
     }
 
     [Fact]

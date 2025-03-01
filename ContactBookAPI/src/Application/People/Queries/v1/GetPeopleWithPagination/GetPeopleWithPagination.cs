@@ -59,6 +59,7 @@ public class GetPeopleWithPaginationQueryHandler : IRequestHandler<GetPeopleWith
                     PhoneNumbers = y.PhoneNumbers.Select(x => x.Number).ToList(),
                 }),
             })
+            .OrderBy(x => x.Id)
             .PaginatedListAsync(request.PageNumber, request.PageSize);
 
         return people;

@@ -1,4 +1,5 @@
 ﻿using ContactBookAPI.Domain.Exceptions;
+using static ContactBookAPI.Domain.Constants.DomainConstants.Person;
 
 namespace ContactBookAPI.Domain.Entities;
 
@@ -30,7 +31,7 @@ public class Person : BaseDeletableAuditableEntity
         _addresses.Add(businessAddress);
     }
 
-    public string FullName { get; private set; }
+    public string FullName { get; set; }
 
     public IReadOnlyCollection<Address> Addresses => _addresses.ToList().AsReadOnly();
 
@@ -76,6 +77,9 @@ public class Person : BaseDeletableAuditableEntity
     {
         if (string.IsNullOrWhiteSpace(fullName))
             throw new InvalidPersonException($"{nameof(FullName)} cannot be empty.");
+
+        if (fullName.Length > MaxFullNameLength)
+            throw new InvalidPersonException($"{nameof(FullName)} cannot exceed {MaxFullNameLength} characters.");
     }
 
     private void ValidateHomeAddress(Address homeAddress)

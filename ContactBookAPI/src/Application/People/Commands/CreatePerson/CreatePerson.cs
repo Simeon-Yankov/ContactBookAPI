@@ -2,6 +2,9 @@
 using ContactBookAPI.Domain.Entities;
 using ContactBookAPI.Domain.Enums;
 using ContactBookAPI.Domain.ValueObjects;
+using static ContactBookAPI.Domain.Constants.DomainConstants.Person;
+using static ContactBookAPI.Domain.Constants.DomainConstants.Address;
+using static ContactBookAPI.Domain.Constants.DomainConstants.PhoneNumber;
 
 namespace ContactBookAPI.Application.People.Commands.CreatePerson;
 
@@ -20,28 +23,30 @@ public class CreatePersonCommandValidator : AbstractValidator<CreatePersonComman
     {
         RuleFor(x => x.FullName)
             .NotEmpty()
-            .MaximumLength(70);
+            .MaximumLength(MaxFullNameLength);
 
         RuleFor(x => x.HomeAddressLine)
             .NotEmpty()
-            .MaximumLength(256);
+            .MaximumLength(MaxAddressLength);
 
         RuleFor(x => x.BusinessAddressLine)
             .NotEmpty()
-            .MaximumLength(256);
+            .MaximumLength(MaxAddressLength);
 
         RuleFor(x => x.HomePhoneNumbers)
             .NotNull().WithMessage("Home Phone Numbers must not be null.")
              .ForEach(phone => phone
                     .NotEmpty().WithMessage("Each phone number must not be empty.")
-                    .MaximumLength(15).WithMessage("Phone number cannot exceed 15 characters.")
+                    .MinimumLength(MinPhoneNumberLength).WithMessage($"Phone number cannot be less than {MinPhoneNumberLength} characters.")
+                    .MaximumLength(MaxPhoneNumberLength).WithMessage($"Phone number cannot exceed {MaxPhoneNumberLength} characters.")
                 );
 
         RuleFor(x => x.BusinessPhoneNumbers)
             .NotNull().WithMessage("Business Phone Numbers must not be null.")
              .ForEach(phone => phone
                     .NotEmpty().WithMessage("Each phone number must not be empty.")
-                    .MaximumLength(15).WithMessage("Phone number cannot exceed 15 characters.")
+                    .MinimumLength(MinPhoneNumberLength).WithMessage($"Phone number cannot be less than {MinPhoneNumberLength} characters.")
+                    .MaximumLength(MaxPhoneNumberLength).WithMessage($"Phone number cannot exceed {MaxPhoneNumberLength} characters.")
                 );
     }
 }

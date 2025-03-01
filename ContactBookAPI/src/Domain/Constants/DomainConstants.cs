@@ -3,7 +3,7 @@ public class DomainConstants
 {
     public class Person
     {
-
+        public const int MaxFullNameLength = 70;
     }
 
     public class Address

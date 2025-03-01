@@ -17,6 +17,7 @@ public class TestcontainersTestDatabase : ITestDatabase
     public TestcontainersTestDatabase()
     {
         _container = new PostgreSqlBuilder()
+            .WithImage("postgres:latest")
             .WithAutoRemove(true)
             .Build();
     }
@@ -30,14 +31,16 @@ public class TestcontainersTestDatabase : ITestDatabase
         _connection = new NpgsqlConnection(_connectionString);
 
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseNpgsql(_connectionString)
+            .UseNpgsql(_connection)
             .Options;
+
+        await _connection.OpenAsync();
 
         var context = new ApplicationDbContext(options);
 
         await context.Database.MigrateAsync();
 
-        _respawner = await Respawner.CreateAsync(_connectionString, new RespawnerOptions
+        _respawner = await Respawner.CreateAsync(_connection, new RespawnerOptions
         {
             TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
             DbAdapter = DbAdapter.Postgres,
@@ -60,7 +63,7 @@ public class TestcontainersTestDatabase : ITestDatabase
         //    SchemasToInclude = new[] { "public" }
         //});
 
-        await _respawner.ResetAsync(_connectionString);
+        await _respawner.ResetAsync(_connection);
     }
 
     public async Task DisposeAsync()
