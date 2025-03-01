@@ -1,6 +1,5 @@
 ﻿using ContactBookAPI.Infrastructure.Data;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

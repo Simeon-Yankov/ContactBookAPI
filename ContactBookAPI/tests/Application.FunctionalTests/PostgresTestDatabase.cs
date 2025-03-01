@@ -7,13 +7,13 @@ using Respawn;
 
 namespace ContactBookAPI.Application.FunctionalTests;
 
-public class SqlServerTestDatabase : ITestDatabase
+public class PostgresTestDatabase : ITestDatabase
 {
     private readonly string _connectionString = null!;
     private SqlConnection _connection = null!;
     private Respawner _respawner = null!;
 
-    public SqlServerTestDatabase()
+    public PostgresTestDatabase()
     {
         var configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")

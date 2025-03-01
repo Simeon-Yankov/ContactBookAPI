@@ -39,7 +39,8 @@ public class TestcontainersTestDatabase : ITestDatabase
 
         _respawner = await Respawner.CreateAsync(_connectionString, new RespawnerOptions
         {
-            TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" }
+            TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
+            DbAdapter = DbAdapter.Postgres,
         });
     }
 
@@ -50,6 +51,15 @@ public class TestcontainersTestDatabase : ITestDatabase
 
     public async Task ResetAsync()
     {
+
+        // If respawner fails, try to recreate it
+        //_respawner = await Respawner.CreateAsync(_connectionString, new RespawnerOptions
+        //{
+        //    TablesToIgnore = new Respawn.Graph.Table[] { "__EFMigrationsHistory" },
+        //    DbAdapter = DbAdapter.Postgres,
+        //    SchemasToInclude = new[] { "public" }
+        //});
+
         await _respawner.ResetAsync(_connectionString);
     }
 
