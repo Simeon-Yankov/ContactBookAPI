@@ -10,6 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using ContactBookAPI.Application.People.Queries.v2.GetPeopleV2;
+using Microsoft.AspNetCore.Http;
 
 namespace ContactBookAPI.Web.Endpoints;
 
@@ -79,29 +80,34 @@ public static class People
         return result is not null ? TypedResults.Ok(result) : TypedResults.NotFound();
     }
 
-    public static async Task<Results<Created<int>, BadRequest<string>>> CreatePerson(
-        ISender sender,
-        CreatePersonCommand command)
+    public static async Task<IResult> CreatePerson(ISender sender, CreatePersonCommand command)
     {
-        var id = await sender.Send(command);
-        return TypedResults.Created($"/api/person/{id}", id);
+        var result = await sender.Send(command);
+
+        if (result.Succeeded)
+        {
+            return Results.Created($"/api/people/{result.Data}", result.Data);
+        }
+        else
+        {
+            return Results.BadRequest(new { errors = result.Errors });
+        }
     }
 
-    public static async Task<Results<NoContent, NotFound, BadRequest<string>>> EditPerson(
+    public static async Task<IResult> EditPerson(
         ISender sender,
-        int id,
         EditPersonCommand command)
     {
-        if (id != command.Id)
-        {
-            return TypedResults.BadRequest("Path ID does not match the request body ID.");
-        }
-
         var result = await sender.Send(command);
 
         if (result.Succeeded)
         {
             return TypedResults.NoContent();
+        }
+
+        if (string.IsNullOrWhiteSpace(result.Message))
+        {
+            return Results.BadRequest(new { errors = result.Errors });
         }
 
         return TypedResults.BadRequest(result.Message);
@@ -114,7 +120,7 @@ public static class People
         public IList<string> PhoneNumbers { get; init; } = [];
     }
 
-    public static async Task<Results<NoContent, NotFound, BadRequest<string>>> UpdateHomeAddress(
+    public static async Task<IResult> UpdateHomeAddress(
         ISender sender,
         UpdateAddressRequest request)
     {
@@ -133,10 +139,15 @@ public static class People
             return TypedResults.NoContent();
         }
 
+        if (string.IsNullOrWhiteSpace(result.Message))
+        {
+            return Results.BadRequest(new { errors = result.Errors });
+        }
+
         return TypedResults.BadRequest(result.Message);
     }
 
-    public static async Task<Results<NoContent, NotFound, BadRequest<string>>> UpdateBusinessAddress(
+    public static async Task<IResult> UpdateBusinessAddress(
             ISender sender,
             UpdateAddressRequest request)
     {
@@ -153,6 +164,11 @@ public static class People
         if (result.Succeeded)
         {
             return TypedResults.NoContent();
+        }
+
+        if (string.IsNullOrWhiteSpace(result.Message))
+        {
+            return Results.BadRequest(new { errors = result.Errors });
         }
 
         return TypedResults.BadRequest(result.Message);

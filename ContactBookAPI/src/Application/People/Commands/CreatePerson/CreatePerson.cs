@@ -5,10 +5,11 @@ using ContactBookAPI.Domain.ValueObjects;
 using static ContactBookAPI.Domain.Constants.DomainConstants.Person;
 using static ContactBookAPI.Domain.Constants.DomainConstants.Address;
 using static ContactBookAPI.Domain.Constants.DomainConstants.PhoneNumber;
+using ContactBookAPI.Application.Common.Models;
 
 namespace ContactBookAPI.Application.People.Commands.CreatePerson;
 
-public record CreatePersonCommand : IRequest<int>
+public record CreatePersonCommand : IRequest<Result<int>>
 {
     public string FullName { get; init; } = default!;
     public string HomeAddressLine { get; init; } = default!;
@@ -51,7 +52,7 @@ public class CreatePersonCommandValidator : AbstractValidator<CreatePersonComman
     }
 }
 
-public class CreatePersonCommandHandler : IRequestHandler<CreatePersonCommand, int>
+public class CreatePersonCommandHandler : IRequestHandler<CreatePersonCommand, Result<int>>
 {
     private readonly IApplicationDbContext _context;
 
@@ -60,7 +61,7 @@ public class CreatePersonCommandHandler : IRequestHandler<CreatePersonCommand, i
         _context = context;
     }
 
-    public async Task<int> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
+    public async Task<Result<int>> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
     {
         var homePhoneNumbers = request.HomePhoneNumbers.Select(phone => new PhoneNumber(phone)).ToList();
         var businessPhoneNumbers = request.BusinessPhoneNumbers.Select(phone => new PhoneNumber(phone)).ToList();
