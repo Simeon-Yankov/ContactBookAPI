@@ -50,7 +50,8 @@ public class DeletePersonTests : BaseTestFixture
 
         // Verify person was deleted
         var deletedPerson = await FindAsync<Person>(person.Id);
-        deletedPerson.Should().BeNull();
+        deletedPerson.Should().NotBeNull();
+        deletedPerson!.IsDeleted.Should().BeTrue();
     }
 
     [Test]
@@ -144,6 +145,7 @@ public class DeletePersonTests : BaseTestFixture
 
         // Verify person was deleted
         var deletedPerson = await FindAsync<Person>(person.Id);
-        deletedPerson.Should().BeNull();
+        deletedPerson.Should().NotBeNull();
+        deletedPerson!.IsDeleted.Should().BeTrue();
     }
 }

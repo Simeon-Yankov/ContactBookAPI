@@ -1,7 +1,7 @@
-﻿namespace ContactBookAPI.Application.FunctionalTests.People.Queries.v1;
+﻿namespace ContactBookAPI.Application.FunctionalTests.People.Queries.v2;
 
 using ContactBookAPI.Application.Common.Exceptions;
-using ContactBookAPI.Application.People.Queries.v1.GetPeopleWithPagination;
+using ContactBookAPI.Application.People.Queries.v2.GetPeopleWithPagination;
 using ContactBookAPI.Domain.Entities;
 using ContactBookAPI.Domain.Enums;
 using ContactBookAPI.Domain.ValueObjects;
@@ -42,7 +42,7 @@ public class GetPeopleWithPaginationTests : BaseTestFixture
         await AddAsync(CreatePerson("Test Person 2"));
         await AddAsync(CreatePerson("Test Person 3"));
 
-        var query = new GetPeopleWithPaginationQuery
+        var query = new GetPeopleWithPaginationV2Query
         {
             PageNumber = 1,
             PageSize = 10
@@ -67,7 +67,7 @@ public class GetPeopleWithPaginationTests : BaseTestFixture
         await AddAsync(CreatePerson("Test Jane Smith"));
         await AddAsync(CreatePerson("Test Bob Johnson"));
 
-        var query = new GetPeopleWithPaginationQuery
+        var query = new GetPeopleWithPaginationV2Query
         {
             FullName = "Smith",
             PageNumber = 1,
@@ -93,7 +93,7 @@ public class GetPeopleWithPaginationTests : BaseTestFixture
         await AddAsync(CreatePerson("Test Jane Smith"));
         await AddAsync(CreatePerson("Test Bob Johnson"));
 
-        var query = new GetPeopleWithPaginationQuery
+        var query = new GetPeopleWithPaginationV2Query
         {
             FullName = "smith", // lowercase
             PageNumber = 1,
@@ -116,7 +116,7 @@ public class GetPeopleWithPaginationTests : BaseTestFixture
         await AddAsync(CreatePerson("Test Person Page 2"));
         await AddAsync(CreatePerson("Test Person Page 3"));
 
-        var query = new GetPeopleWithPaginationQuery
+        var query = new GetPeopleWithPaginationV2Query
         {
             PageNumber = 2,
             PageSize = 1
@@ -141,7 +141,7 @@ public class GetPeopleWithPaginationTests : BaseTestFixture
         await AddAsync(CreatePerson("Test Person 1"));
         await AddAsync(CreatePerson("Test Person 2"));
 
-        var query = new GetPeopleWithPaginationQuery
+        var query = new GetPeopleWithPaginationV2Query
         {
             PageNumber = 10,
             PageSize = 10
@@ -162,7 +162,7 @@ public class GetPeopleWithPaginationTests : BaseTestFixture
         await AddAsync(CreatePerson("Test Person 1"));
         await AddAsync(CreatePerson("Test Person 2"));
 
-        var query = new GetPeopleWithPaginationQuery
+        var query = new GetPeopleWithPaginationV2Query
         {
             FullName = "NonExistentName",
             PageNumber = 1,
@@ -181,7 +181,7 @@ public class GetPeopleWithPaginationTests : BaseTestFixture
     public async Task ShouldFailValidation_WhenPageNumberIsLessThanOne()
     {
         // Arrange
-        var query = new GetPeopleWithPaginationQuery
+        var query = new GetPeopleWithPaginationV2Query
         {
             PageNumber = 0,
             PageSize = 10
@@ -196,7 +196,7 @@ public class GetPeopleWithPaginationTests : BaseTestFixture
     public async Task ShouldFailValidation_WhenPageSizeIsLessThanOne()
     {
         // Arrange
-        var query = new GetPeopleWithPaginationQuery
+        var query = new GetPeopleWithPaginationV2Query
         {
             PageNumber = 1,
             PageSize = 0
@@ -211,7 +211,7 @@ public class GetPeopleWithPaginationTests : BaseTestFixture
     public async Task ShouldFailValidation_WhenFullNameExceedsMaxLength()
     {
         // Arrange
-        var query = new GetPeopleWithPaginationQuery
+        var query = new GetPeopleWithPaginationV2Query
         {
             FullName = new string('A', 71), // Max length is 70
             PageNumber = 1,
@@ -230,7 +230,7 @@ public class GetPeopleWithPaginationTests : BaseTestFixture
         await AddAsync(CreatePerson("Test Person With Addresses 1"));
         await AddAsync(CreatePerson("Test Person With Addresses 2"));
 
-        var query = new GetPeopleWithPaginationQuery
+        var query = new GetPeopleWithPaginationV2Query
         {
             PageNumber = 1,
             PageSize = 10

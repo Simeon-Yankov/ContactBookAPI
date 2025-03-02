@@ -12,8 +12,7 @@ public class PersonDto
 public class AddressDto
 {
     public string AddressLine { get; init; } = default!;
-    public AddressType AddressType { get; init; }
-    //public string AddressType { get; init; } = default!;
+    public string AddressType { get; init; } = default!;
 
     public IEnumerable<string> PhoneNumbers { get; init; } = Array.Empty<string>();
 }

@@ -1,9 +1,9 @@
-﻿namespace ContactBookAPI.Application.FunctionalTests.People.Queries.v1;
+﻿namespace ContactBookAPI.Application.FunctionalTests.People.Queries.v2;
 
 using ContactBookAPI.Application.Common.Exceptions;
 using ContactBookAPI.Application.People.Commands.EditPerson;
 using ContactBookAPI.Application.People.Commands.UpdateAddress;
-using ContactBookAPI.Application.People.Queries.v1.GetPerson;
+using ContactBookAPI.Application.People.Queries.v2.GetPeopleV2;
 using ContactBookAPI.Domain.Entities;
 using ContactBookAPI.Domain.Enums;
 using ContactBookAPI.Domain.ValueObjects;
@@ -47,7 +47,7 @@ public class GetPersonTests : BaseTestFixture
 
         await AddAsync(person);
 
-        var query = new GetPersonQuery
+        var query = new GetPersonV2Query
         {
             Id = person.Id
         };
@@ -80,7 +80,7 @@ public class GetPersonTests : BaseTestFixture
     {
         // Arrange
         var nonExistentId = 999;
-        var query = new GetPersonQuery
+        var query = new GetPersonV2Query
         {
             Id = nonExistentId
         };
@@ -96,7 +96,7 @@ public class GetPersonTests : BaseTestFixture
     public async Task ShouldFailValidation_WhenIdIsZero()
     {
         // Arrange
-        var query = new GetPersonQuery
+        var query = new GetPersonV2Query
         {
             Id = 0
         };
@@ -110,7 +110,7 @@ public class GetPersonTests : BaseTestFixture
     public async Task ShouldFailValidation_WhenIdIsNegative()
     {
         // Arrange
-        var query = new GetPersonQuery
+        var query = new GetPersonV2Query
         {
             Id = -1
         };
@@ -144,7 +144,7 @@ public class GetPersonTests : BaseTestFixture
 
         await AddAsync(person);
 
-        var query = new GetPersonQuery
+        var query = new GetPersonV2Query
         {
             Id = person.Id
         };
@@ -179,7 +179,7 @@ public class GetPersonTests : BaseTestFixture
 
         await AddAsync(person);
 
-        var query = new GetPersonQuery
+        var query = new GetPersonV2Query
         {
             Id = person.Id
         };
@@ -242,7 +242,7 @@ public class GetPersonTests : BaseTestFixture
         await SendAsync(updateAddressCommand);
 
         // Now query for the updated person
-        var query = new GetPersonQuery
+        var query = new GetPersonV2Query
         {
             Id = personId
         };

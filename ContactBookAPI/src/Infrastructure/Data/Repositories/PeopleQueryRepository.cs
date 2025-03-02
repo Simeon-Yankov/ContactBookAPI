@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.Text;
 using ContactBookAPI.Application.Common.Models;
 using ContactBookAPI.Application.People;
 using ContactBookAPI.Application.People.Queries.v1.GetPerson;
@@ -112,7 +111,6 @@ public class PeopleQueryRepository : IPeopleQueryRepository
 
         foreach (var row in result)
         {
-            // Get or create person
             if (!personDictionary.TryGetValue((int)row.Id, out var person))
             {
                 person = new PersonDto
@@ -127,21 +125,22 @@ public class PeopleQueryRepository : IPeopleQueryRepository
             if (row.AddressLine == null)
                 continue;
 
-            // Get or create address
+            int addressTypeValue = (int)row.AddressType;
+            var addressTypeEnum = (AddressType)addressTypeValue;
+
             var addressKey = (person.Id, (int)row.AddressType);
             if (!addressDictionary.TryGetValue(addressKey, out var address))
             {
                 address = new AddressDto
                 {
                     AddressLine = (string)row.AddressLine,
-                    AddressType = (AddressType)row.AddressType,
+                    AddressType = addressTypeEnum.ToString(),
                     PhoneNumbers = new List<string>()
                 };
                 addressDictionary.Add(addressKey, address);
                 ((List<AddressDto>)person.Addresses).Add(address);
             }
 
-            // Add phone number if it exists
             if (row.Number != null)
             {
                 ((List<string>)address.PhoneNumbers).Add((string)row.Number);

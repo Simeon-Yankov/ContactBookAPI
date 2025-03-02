@@ -55,7 +55,7 @@ public class GetPeopleWithPaginationQueryHandler : IRequestHandler<GetPeopleWith
                 Addresses = x.Addresses.Select(y => new AddressDto
                 {
                     AddressLine = y.AddressLine,
-                    AddressType = y.AddressType,
+                    AddressType = y.AddressType.ToString(),
                     PhoneNumbers = y.PhoneNumbers.Select(x => x.Number).ToList(),
                 }),
             })

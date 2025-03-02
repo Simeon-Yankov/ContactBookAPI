@@ -36,7 +36,7 @@ public class GetPersonQueryHandler : IRequestHandler<GetPersonQuery, PersonDto?>
                 Addresses = x.Addresses.Select(y => new AddressDto
                 {
                     AddressLine = y.AddressLine,
-                    AddressType = y.AddressType,
+                    AddressType = y.AddressType.ToString(),
                     PhoneNumbers = y.PhoneNumbers.Select(x => x.Number).ToList(),
                 }),
             })

@@ -1,5 +1,4 @@
-﻿using ContactBookAPI.Application.Common.Interfaces;
-using ContactBookAPI.Application.People.Queries.v1.GetPerson;
+﻿using ContactBookAPI.Application.People.Queries.v1.GetPerson;
 
 namespace ContactBookAPI.Application.People.Queries.v2.GetPeopleV2;
 

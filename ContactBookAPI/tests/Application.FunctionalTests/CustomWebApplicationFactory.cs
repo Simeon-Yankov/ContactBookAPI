@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using System.Data;
+using System.Data.Common;
 using ContactBookAPI.Application.Common.Interfaces;
 using ContactBookAPI.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Npgsql;
 
 namespace ContactBookAPI.Application.FunctionalTests;
 
@@ -33,6 +35,10 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                     options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
                     options.UseNpgsql(_connection);
                 });
+
+            services
+                .RemoveAll<IDbConnection>()
+                .AddSingleton<IDbConnection>(_connection);
         });
     }
 }
