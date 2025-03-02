@@ -3,16 +3,26 @@ Web API that creates and maintains a phone and address book.
 
 
 
-## 📦 Getting Started with Docker Compose
+### Running the solution with Docker Compose
+
+> [!WARNING]
+> Remember to ensure that Docker is started
 
 ### 1️⃣ Clone the Repository
+
+```powershell
+git clone https://github.com/Simeon-Yankov/ContactBookAPI.git
+cd ContactBookAPI
+```
 
 * git clone [https://github.com/yourusername/ContactBookAPI.git](https://github.com/Simeon-Yankov/ContactBookAPI.git)
 * cd ContactBookAPI
 
 ### 2️⃣ Build and Run with Docker Compose
 
-* docker-compose up --build
+```powershell
+docker-compose up --build
+```
 
 ### 3️⃣ Access the API
 
