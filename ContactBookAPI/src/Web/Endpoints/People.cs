@@ -5,9 +5,11 @@ using ContactBookAPI.Application.People.Commands.EditPerson;
 using ContactBookAPI.Application.People.Commands.UpdateAddress;
 using ContactBookAPI.Application.People.Queries.v1.GetPeopleWithPagination;
 using ContactBookAPI.Application.People.Queries.v1.GetPerson;
+using ContactBookAPI.Application.People.Queries.v2.GetPeopleWithPagination;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using ContactBookAPI.Application.People.Queries.v2.GetPeopleV2;
 
 namespace ContactBookAPI.Web.Endpoints;
 
@@ -21,6 +23,10 @@ public static class People
 
         group.MapGet("/", GetPeopleWithPagination);
         group.MapGet("/{id:int}", GetPerson);
+
+        group.MapGet("/v2", GetPeopleWithPaginationV2);
+        group.MapGet("/v2/{id:int}", GetPersonV2);
+
         group.MapPost("/", CreatePerson);
         group.MapPut("/", EditPerson);
         group.MapPut("/update-home-address", UpdateHomeAddress);
@@ -29,8 +35,8 @@ public static class People
     }
 
     public static async Task<Ok<PaginatedList<PersonDto>>> GetPeopleWithPagination(
-    ISender sender,
-    [AsParameters] GetPeopleWithPaginationQuery query)
+        ISender sender,
+        [AsParameters] GetPeopleWithPaginationQuery query)
     {
         var result = await sender.Send(query);
         return TypedResults.Ok(result);
@@ -39,6 +45,35 @@ public static class People
     public static async Task<Results<Ok<PersonDto>, NotFound>> GetPerson(
         ISender sender,
         [AsParameters] GetPersonQuery query)
+    {
+        var result = await sender.Send(query);
+        return result is not null ? TypedResults.Ok(result) : TypedResults.NotFound();
+    }
+
+    /// <summary>
+    /// Get Person with pagination using Dapper
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="query"></param>
+    /// <returns></returns>
+    public static async Task<Ok<PaginatedList<PersonDto>>> GetPeopleWithPaginationV2(
+        ISender sender,
+        [AsParameters] GetPeopleWithPaginationV2Query query)
+    {
+        var result = await sender.Send(query);
+        return TypedResults.Ok(result);
+    }
+
+
+    /// <summary>
+    /// Get Person using Dapper
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="query"></param>
+    /// <returns></returns>
+    public static async Task<Results<Ok<PersonDto>, NotFound>> GetPersonV2(
+        ISender sender,
+        [AsParameters] GetPersonV2Query query)
     {
         var result = await sender.Send(query);
         return result is not null ? TypedResults.Ok(result) : TypedResults.NotFound();

@@ -1,9 +1,13 @@
-﻿using ContactBookAPI.Application.Common.Interfaces;
+﻿using System.Data;
+using ContactBookAPI.Application.Common.Interfaces;
+using ContactBookAPI.Application.People;
 using ContactBookAPI.Infrastructure.Data;
 using ContactBookAPI.Infrastructure.Data.Interceptors;
+using ContactBookAPI.Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using Npgsql;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -27,7 +31,11 @@ public static class DependencyInjection
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<ApplicationDbContextInitialiser>();
 
+        services.AddTransient<IDbConnection>(sp =>
+            new NpgsqlConnection(connectionString));
+
         services.AddSingleton(TimeProvider.System);
+        services.AddScoped<IPeopleQueryRepository, PeopleQueryRepository>();
 
         return services;
     }
