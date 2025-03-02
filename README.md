@@ -75,9 +75,9 @@ cd ContactBookAPI
 
 * CRUD Operations:
 
-- Create, edit, and delete contacts with full name, addresses, and phone numbers.
+  - Create, edit, and delete contacts with full name, addresses, and phone numbers.
 
-- Retrieve all contacts or filter them with pagination.
+  - Retrieve all contacts or filter them with pagination.
 
 ## 📜 License
 
