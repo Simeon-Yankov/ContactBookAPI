@@ -10,7 +10,7 @@ Web API that creates and maintains a phone and address book.
 * git clone [https://github.com/yourusername/ContactBookAPI.git](https://github.com/Simeon-Yankov/ContactBookAPI.git)
 * cd ContactBookAPI
 
-* 2️⃣ Build and Run with Docker Compose
+### 2️⃣ Build and Run with Docker Compose
 
 * docker-compose up --build
 
@@ -37,6 +37,8 @@ Web API that creates and maintains a phone and address book.
 
 * Docker
 
+  
+
 ## ✨ Features
 
 * Clean Architecture with Domain-Driven Design
@@ -49,7 +51,9 @@ Web API that creates and maintains a phone and address book.
 
 * Performance monitoring for requests
 
-* Extensive test coverage (Application.FunctionalTests, Domain.UnitTests) 
+* Extensive test coverage (Application.FunctionalTests, Domain.UnitTests)
+
+
 
 ## 🔑 Key Implementation Details
 
@@ -62,6 +66,8 @@ Web API that creates and maintains a phone and address book.
   - Create, edit, and delete contacts with full name, addresses, and phone numbers.
 
   - Retrieve all contacts or filter them with pagination.
+ 
+  
 
 ## 🏗️ Project Structure
 
@@ -72,6 +78,8 @@ Web API that creates and maintains a phone and address book.
 * Infrastructure - Database context, migrations, and external service implementations
 
 * Web - API controllers, middleware, and configuration
+
+
 
 ## 📜 License
 
