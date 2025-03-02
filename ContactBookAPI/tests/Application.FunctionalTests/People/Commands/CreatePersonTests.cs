@@ -24,10 +24,10 @@ public class CreatePersonTests : BaseTestFixture
         };
 
         // Act
-        var personId = await SendAsync(command);
+        var result = await SendAsync(command);
 
         // Assert
-        var person = await FindAsync<Person>(personId);
+        var person = await FindAsync<Person>(result.Data);
 
         person.Should().NotBeNull();
         person!.FullName.Should().Be(command.FullName);
@@ -58,10 +58,10 @@ public class CreatePersonTests : BaseTestFixture
         };
 
         // Act
-        var personId = await SendAsync(command);
+        var result = await SendAsync(command);
 
         // Assert
-        var person = await FindAsync<Person>(personId);
+        var person = await FindAsync<Person>(result.Data);
 
         person.Should().NotBeNull();
         var homeAddress = person!.Addresses.First(a => a.AddressType == AddressType.Home);
