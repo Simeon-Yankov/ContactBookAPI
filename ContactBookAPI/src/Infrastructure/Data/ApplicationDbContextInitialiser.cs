@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Bogus;
+using ContactBookAPI.Domain.Enums;
+using ContactBookAPI.Domain.ValueObjects;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -58,6 +61,61 @@ public class ApplicationDbContextInitialiser
 
     public async Task TrySeedAsync()
     {
-        await Task.CompletedTask;
+        if (_context.People.Any())
+        {
+            _logger.LogInformation("Database already contains person data - skipping seeding");
+            return;
+        }
+
+        _logger.LogInformation("Seeding database...");
+
+        Faker.GlobalUniqueIndex = 0;
+
+        var phoneNumberFaker = new Faker<PhoneNumber>()
+            .CustomInstantiator(f => new PhoneNumber(
+                $"+{f.Random.Number(1, 9)}{f.Random.Number(100000000, 999999999)}"
+            ));
+
+        var homeAddressFaker = new Faker<Address>()
+            .CustomInstantiator(f => {
+                var phoneNumbers = phoneNumberFaker.Generate(f.Random.Number(1, 3));
+
+                return new Address(
+                    $"{f.Address.StreetAddress()}, {f.Address.City()}, {f.Address.StateAbbr()} {f.Address.ZipCode()}",
+                    AddressType.Home,
+                    phoneNumbers
+                );
+            });
+
+        var businessAddressFaker = new Faker<Address>()
+            .CustomInstantiator(f => {
+                var phoneNumbers = phoneNumberFaker.Generate(f.Random.Number(1, 2));
+
+                return new Address(
+                    $"{f.Company.CompanyName()}, {f.Address.StreetAddress()}, {f.Address.City()}, {f.Address.StateAbbr()} {f.Address.ZipCode()}",
+                    AddressType.Business,
+                    phoneNumbers
+                );
+            });
+
+        var personFaker = new Faker<ContactBookAPI.Domain.Entities.Person>()
+            .CustomInstantiator(f => {
+                var fullName = $"{f.Name.FirstName()} {f.Name.LastName()}";
+                var homeAddress = homeAddressFaker.Generate();
+                var businessAddress = businessAddressFaker.Generate();
+
+                return new ContactBookAPI.Domain.Entities.Person(
+                    fullName,
+                    homeAddress,
+                    businessAddress
+                );
+            });
+
+        var people = personFaker.Generate(4);
+
+        await _context.People.AddRangeAsync(people);
+        await _context.SaveChangesAsync();
+
+        _logger.LogInformation("Seeded 4 sample people with addresses and phone numbers");
     }
 }
