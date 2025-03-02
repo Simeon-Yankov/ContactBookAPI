@@ -3,25 +3,22 @@ Web API that creates and maintains a phone and address book.
 
 
 
-## 📦 Getting Started
+## 📦 Getting Started with Docker Compose
 
-The easiest way to run the application is using Docker Compose.
+### 1️⃣ Clone the Repository
 
-1️⃣ Clone the Repository
+* git clone [https://github.com/yourusername/ContactBookAPI.git](https://github.com/Simeon-Yankov/ContactBookAPI.git)
+* cd ContactBookAPI
 
-### git clone [https://github.com/yourusername/ContactBookAPI.git](https://github.com/Simeon-Yankov/ContactBookAPI.git)
-cd ContactBookAPI
+* 2️⃣ Build and Run with Docker Compose
 
-2️⃣ Build and Run with Docker Compose
+* docker-compose up --build
 
-### docker-compose up --build
+### 3️⃣ Access the API
 
-3️⃣ Access the API
+* API Base URL: http://localhost:8080
 
-### API Base URL: http://localhost:8080
-
-### Swagger Documentation: http://localhost:8080/api/index.html
-
+* Swagger Documentation: http://localhost:8080/api/index.html
 
 
 ## 🚀 Tech Stack
@@ -40,7 +37,6 @@ cd ContactBookAPI
 
 * Docker
 
-
 ## ✨ Features
 
 * Clean Architecture with Domain-Driven Design
@@ -53,19 +49,7 @@ cd ContactBookAPI
 
 * Performance monitoring for requests
 
-* Multiple data access strategies (EF Core & Dapper)
-
 * Extensive test coverage (Application.FunctionalTests, Domain.UnitTests) 
-
-## 🏗️ Project Structure
-
-* Domain - Business entities, value objects, and domain exceptions
-
-* Application - Business logic, CQRS commands/queries, and validation
-
-* Infrastructure - Database context, migrations, and external service implementations
-
-* Web - API controllers, middleware, and configuration
 
 ## 🔑 Key Implementation Details
 
@@ -78,6 +62,16 @@ cd ContactBookAPI
   - Create, edit, and delete contacts with full name, addresses, and phone numbers.
 
   - Retrieve all contacts or filter them with pagination.
+
+## 🏗️ Project Structure
+
+* Domain - Business entities, value objects, and domain exceptions
+
+* Application - Business logic, CQRS commands/queries, and validation
+
+* Infrastructure - Database context, migrations, and external service implementations
+
+* Web - API controllers, middleware, and configuration
 
 ## 📜 License
 
