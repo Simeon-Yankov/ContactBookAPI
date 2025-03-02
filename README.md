@@ -1,9 +1,7 @@
 # ContactBookAPI
 Web API that creates and maintains a phone and address book.
 
-# ContactBookAPI
 
-A modern contact book API built with ASP.NET Core 8, following clean architecture principles and implementing the CQRS pattern.
 
 ## 📦 Getting Started
 
@@ -24,6 +22,8 @@ cd ContactBookAPI
 
 ### Swagger Documentation: http://localhost:8080/api/index.html
 
+
+
 ## 🚀 Tech Stack
 
 * ASP.NET Core 8.0
@@ -39,6 +39,7 @@ cd ContactBookAPI
 * Swagger/OpenAPI
 
 * Docker
+
 
 ## ✨ Features
 
@@ -58,13 +59,13 @@ cd ContactBookAPI
 
 ## 🏗️ Project Structure
 
-Domain - Business entities, value objects, and domain exceptions
+* Domain - Business entities, value objects, and domain exceptions
 
-Application - Business logic, CQRS commands/queries, and validation
+* Application - Business logic, CQRS commands/queries, and validation
 
-Infrastructure - Database context, migrations, and external service implementations
+* Infrastructure - Database context, migrations, and external service implementations
 
-Web - API controllers, middleware, and configuration
+* Web - API controllers, middleware, and configuration
 
 ## 🔑 Key Implementation Details
 
@@ -74,9 +75,9 @@ Web - API controllers, middleware, and configuration
 
 * CRUD Operations:
 
-** Create, edit, and delete contacts with full name, addresses, and phone numbers.
+- Create, edit, and delete contacts with full name, addresses, and phone numbers.
 
-** Retrieve all contacts or filter them with pagination.
+- Retrieve all contacts or filter them with pagination.
 
 ## 📜 License
 
