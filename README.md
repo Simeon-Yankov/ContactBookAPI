@@ -12,7 +12,7 @@
 
 ```powershell
 git clone https://github.com/Simeon-Yankov/ContactBookAPI.git
-cd ContactBookAPI
+cd ContactBookAPI/ContactBookAPI
 ```
 
 #### 2. Build and Run with Docker Compose
